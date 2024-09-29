@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e90ff, #ff6347);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+            font-family: Arial, sans-serif;
+            color: #ffffff;
+        }
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .abc {
+            margin-left: -75px;
+        }
+
+        .bcd {
+            position: relative;
+            left: -81px;
+        }
+
+        .calculator {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        input[type="text"] {
+            width: 94%;
+            height: 60px;
+            text-align: right;
+            margin-bottom: 10px;
+            font-size: 24px;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+        }
+
+        button {
+            width: 60px;
+            height: 60px;
+            margin: 5px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <input type="text" id="display" disabled>
+        <div class="button-row">
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+            <button onclick="setOperation('+')">+</button>
+        </div>
+        <div class="button-row">
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
+            <button onclick="setOperation('-')">-</button>
+        </div>
+        <div class="button-row">
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
+            <button onclick="setOperation('*')">*</button>
+        </div>
+        <div class="button-row">
+            <button onclick="appendNumber('0')">0</button>
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="calculateResult()">=</button>
+            <button onclick="setOperation('/')">/</button>
+        </div>
+        <div class="button-row">
+            <button onclick="backspace()">Ac</button>
+            <button class="abc" onclick="CelToFarenhite()">C->F</button>
+            <button class="bcd" onclick="FerToCelsius()">F->C</button>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentOperation = '';
+        let firstOperand = '';
+        let secondOperand = '';
+        let shouldResetDisplay = false;
+
+        function appendNumber(number) {
+            if (shouldResetDisplay) {
+                display.value = '';
+                shouldResetDisplay = false;
+            }
+            display.value += number;
+
+        }
+
+        function setOperation(operation) {
+            firstOperand = display.value;
+            currentOperation = operation;
+            display.value += ' ' + operation + ' ';
+            shouldResetDisplay = false;
+        }
+
+        function calculateResult() {
+            if (currentOperation === '') return;
+            let secondOperand = display.value.split(' ').pop();
+            let result;
+            switch (currentOperation) {
+                case '+':
+                    result = parseFloat(firstOperand) + parseFloat(secondOperand);
+                    break;
+                case '-':
+                    result = parseFloat(firstOperand) - parseFloat(secondOperand);
+                    break;
+                case '*':
+                    result = parseFloat(firstOperand) * parseFloat(secondOperand);
+                    break;
+                case '/':
+                    result = parseFloat(firstOperand) / parseFloat(secondOperand);
+                    break;
+                
+                default:
+                    result = 'Error';
+            }
+            display.value = result;
+            currentOperation = '';
+            shouldResetDisplay = true
+        }
+
+        function clearDisplay() {
+            display.value = '';
+            firstOperand = '';
+            secondOperand = '';
+            currentOperation = '';
+        }
+
+        function backspace() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        function CelToFarenhite(){
+            let celsius = document.getElementById('display').value;
+            result = (celsius * 9/5) + 32;
+            display.value = result;
+
+            
+         }
+        function FerToCelsius(){
+            let farenhite = document.getElementById('display').value;
+            result = (farenhite -32) * 5/9;
+            display.value = result;
+
+            
+         }
+
+
+    </script>
+   
+</body>
+
+</html>
